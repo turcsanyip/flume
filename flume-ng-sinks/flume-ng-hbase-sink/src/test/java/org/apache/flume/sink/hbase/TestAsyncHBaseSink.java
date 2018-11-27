@@ -501,6 +501,7 @@ public class TestAsyncHBaseSink {
       try {
         sink.process();
       } catch (EventDeliveryException ex) {
+        // expected
       }
     }
     long increaseInFD = getOpenFileDescriptorCount() - initialFDCount;

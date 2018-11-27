@@ -389,6 +389,7 @@ public class TestHiveSink {
     try {
       Thread.sleep(n);
     } catch (InterruptedException e) {
+      // noop
     }
   }
 

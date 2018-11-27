@@ -118,6 +118,7 @@ public class TestChannelProcessor {
     try {
       Thread.sleep(3000);
     } catch (InterruptedException e) {
+      // noop
     }
 
     for (Channel channel : channels) {
@@ -137,6 +138,7 @@ public class TestChannelProcessor {
     try {
       Thread.sleep(3000);
     } catch (InterruptedException e) {
+      // noop
     }
     for (Channel channel : channels) {
       Transaction transaction = channel.getTransaction();

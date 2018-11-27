@@ -51,10 +51,6 @@ under the License.
     <suppress checks="MissingSwitchDefault"
               files="SyslogUtils\.java|ReliableTaildirEventReader\.java|AbstractBasicChannelSemanticsTest\.java"/>
 
-    <!-- TODO: Avoid empty catch blocks -->
-    <suppress checks="EmptyCatchBlock"
-              files="channel[/\\]file[/\\]LogFile\.java|TestDatasetSink\.java|CountingSourceRunner\.java|CountingSinkRunner\.java|TestKafkaChannel\.java|TestTaildirSource\.java|TestChannelProcessor\.java|TestHiveSink\.java|AbstractBasicChannelSemanticsTest\.java|TestJMSSource\.java|TestEmbeddedAgent\.java|TestAsyncHBaseSink\.java"/>
-
     <!-- TODO: Avoid empty if blocks -->
     <suppress checks="EmptyBlockCheck"
               files="ElasticSearchClientFactory\.java"/>

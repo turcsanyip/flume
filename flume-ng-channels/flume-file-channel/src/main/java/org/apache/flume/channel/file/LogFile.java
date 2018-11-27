@@ -715,6 +715,7 @@ public abstract class LogFile {
         try {
           fileHandle.close();
         } catch (IOException e) {
+          LOG.debug("Unable to close file.", e);
         }
       }
     }

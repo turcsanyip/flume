@@ -146,7 +146,7 @@ public class TestJMSSource extends JMSMessageConsumerTestBase {
       source.process();
       Assert.fail();
     } catch (FlumeException expected) {
-
+      // expected
     }
   }
 
@@ -210,7 +210,7 @@ public class TestJMSSource extends JMSMessageConsumerTestBase {
       source.process();
       Assert.fail();
     } catch (EventDeliveryException expected) {
-
+      // expected
     }
   }
 
@@ -324,8 +324,8 @@ public class TestJMSSource extends JMSMessageConsumerTestBase {
     try {
       source.process();
       Assert.fail();
-    } catch (Error ignores) {
-
+    } catch (Error expected) {
+      // expected
     }
     verify(consumer).rollback();
   }

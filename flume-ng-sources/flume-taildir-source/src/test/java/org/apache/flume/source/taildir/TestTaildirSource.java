@@ -225,6 +225,7 @@ public class TestTaildirSource {
     try {
       Thread.sleep(1000); // wait before creating a new file
     } catch (InterruptedException e) {
+      // noop
     }
 
     // 1) Create 2nd file
@@ -236,6 +237,7 @@ public class TestTaildirSource {
     try {
       Thread.sleep(1000); // wait before creating next file
     } catch (InterruptedException e) {
+      // noop
     }
 
     // 3) Create 3rd file
@@ -248,6 +250,7 @@ public class TestTaildirSource {
     try {
       Thread.sleep(1000); // wait before creating a new file
     } catch (InterruptedException e) {
+      // noop
     }
 
 
@@ -261,6 +264,7 @@ public class TestTaildirSource {
     try {
       Thread.sleep(1000); // wait before creating a new file
     } catch (InterruptedException e) {
+      // noop
     }
 
 

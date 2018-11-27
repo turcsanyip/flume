@@ -253,6 +253,7 @@ public abstract class AbstractBasicChannelSemanticsTest {
           try {
             Thread.sleep(500);
           } catch (InterruptedException e) {
+            // noop
           }
           mainThread.interrupt();
         }

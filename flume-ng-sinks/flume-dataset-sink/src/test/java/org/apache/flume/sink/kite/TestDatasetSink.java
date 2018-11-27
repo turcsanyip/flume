@@ -877,7 +877,7 @@ public class TestDatasetSink {
       sink.write(mockEvent);
       Assert.fail("Should throw EventDeliveryException");
     } catch (EventDeliveryException ex) {
-
+      // expected
     }
 
     // Verify that the event was not sent to the failure policy

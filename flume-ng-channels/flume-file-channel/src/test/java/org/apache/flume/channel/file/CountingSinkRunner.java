@@ -56,6 +56,7 @@ public class CountingSinkRunner extends Thread {
         try {
           Thread.sleep(1000L);
         } catch (InterruptedException e) {
+          // noop
         }
       }
     }
