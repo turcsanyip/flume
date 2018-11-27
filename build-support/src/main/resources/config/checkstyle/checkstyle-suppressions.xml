@@ -45,7 +45,7 @@ under the License.
 
     <!-- TODO: Fix inner class names to follow standard convention -->
     <suppress checks="TypeName"
-              files="SyslogUDPSource\.java|SyslogTcpSource\.java|TaildirSource\.java"/>
+              files="SyslogUDPSource\.java|SyslogTcpSource\.java"/>
 
     <!-- TODO: Add default cases to switch statements -->
     <suppress checks="MissingSwitchDefault"

@@ -108,7 +108,7 @@ public class TaildirSource extends AbstractSource implements
     }
     idleFileChecker = Executors.newSingleThreadScheduledExecutor(
         new ThreadFactoryBuilder().setNameFormat("idleFileChecker").build());
-    idleFileChecker.scheduleWithFixedDelay(new idleFileCheckerRunnable(),
+    idleFileChecker.scheduleWithFixedDelay(new IdleFileCheckerRunnable(),
         idleTimeout, checkIdleInterval, TimeUnit.MILLISECONDS);
 
     positionWriter = Executors.newSingleThreadScheduledExecutor(
@@ -313,7 +313,7 @@ public class TaildirSource extends AbstractSource implements
   /**
    * Runnable class that checks whether there are files which should be closed.
    */
-  private class idleFileCheckerRunnable implements Runnable {
+  private class IdleFileCheckerRunnable implements Runnable {
     @Override
     public void run() {
       try {
