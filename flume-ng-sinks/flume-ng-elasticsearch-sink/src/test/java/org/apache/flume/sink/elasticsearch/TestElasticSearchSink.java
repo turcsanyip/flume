@@ -144,7 +144,7 @@ public class TestElasticSearchSink extends AbstractElasticSearchSinkTest {
     fixture.process();
     fixture.stop();
     client.admin().indices()
-            .refresh(Requests.refreshRequest(timestampedIndexName)).actionGet();
+        .refresh(Requests.refreshRequest(timestampedIndexName)).actionGet();
 
     Map<String, Object> expectedBody = new HashMap<String, Object>();
     expectedBody.put("event", "json content");
@@ -384,7 +384,7 @@ public class TestElasticSearchSink extends AbstractElasticSearchSinkTest {
 
     @Override
     protected void prepareIndexRequest(IndexRequestBuilder indexRequest, String indexName,
-                                       String indexType, Event event) throws IOException {
+        String indexType, Event event) throws IOException {
       actualIndexName = indexName;
       actualIndexType = indexType;
       actualEventBody = event.getBody();
@@ -425,7 +425,7 @@ public class TestElasticSearchSink extends AbstractElasticSearchSinkTest {
   public void shouldUseSpecifiedSerializer() throws Exception {
     Context context = new Context();
     context.put(SERIALIZER,
-        "org.apache.flume.sink.elasticsearch.FakeEventSerializer");
+        "org.apache.flume.sink.elasticsearch.TestElasticSearchSink$FakeEventSerializer");
 
     assertNull(fixture.getEventSerializer());
     fixture.configure(context);
@@ -436,7 +436,7 @@ public class TestElasticSearchSink extends AbstractElasticSearchSinkTest {
   public void shouldUseSpecifiedIndexNameBuilder() throws Exception {
     Context context = new Context();
     context.put(ElasticSearchSinkConstants.INDEX_NAME_BUILDER,
-            "org.apache.flume.sink.elasticsearch.FakeIndexNameBuilder");
+        "org.apache.flume.sink.elasticsearch.TestElasticSearchSink$FakeIndexNameBuilder");
 
     assertNull(fixture.getIndexNameBuilder());
     fixture.configure(context);
@@ -449,57 +449,57 @@ public class TestElasticSearchSink extends AbstractElasticSearchSinkTest {
       // no-op
     }
   }
-}
 
-/**
- * Internal class. Fake event serializer used for tests
- */
-class FakeEventSerializer implements ElasticSearchEventSerializer {
+  /**
+   * Internal class. Fake event serializer used for tests
+   */
+  static class FakeEventSerializer implements ElasticSearchEventSerializer {
 
-  static final byte[] FAKE_BYTES = new byte[] { 9, 8, 7, 6 };
-  boolean configuredWithContext;
-  boolean configuredWithComponentConfiguration;
+    static final byte[] FAKE_BYTES = new byte[]{ 9, 8, 7, 6 };
+    boolean configuredWithContext;
+    boolean configuredWithComponentConfiguration;
 
-  @Override
-  public BytesStream getContentBuilder(Event event) throws IOException {
-    FastByteArrayOutputStream fbaos = new FastByteArrayOutputStream(4);
-    fbaos.write(FAKE_BYTES);
-    return fbaos;
+    @Override
+    public BytesStream getContentBuilder(Event event) throws IOException {
+      FastByteArrayOutputStream fbaos = new FastByteArrayOutputStream(4);
+      fbaos.write(FAKE_BYTES);
+      return fbaos;
+    }
+
+    @Override
+    public void configure(Context arg0) {
+      configuredWithContext = true;
+    }
+
+    @Override
+    public void configure(ComponentConfiguration arg0) {
+      configuredWithComponentConfiguration = true;
+    }
   }
 
-  @Override
-  public void configure(Context arg0) {
-    configuredWithContext = true;
-  }
+  /**
+   * Internal class. Fake index name builder used only for tests.
+   */
+  static class FakeIndexNameBuilder implements IndexNameBuilder {
 
-  @Override
-  public void configure(ComponentConfiguration arg0) {
-    configuredWithComponentConfiguration = true;
-  }
-}
+    static final String INDEX_NAME = "index_name";
 
-/**
- * Internal class. Fake index name builder used only for tests.
- */
-class FakeIndexNameBuilder implements IndexNameBuilder {
+    @Override
+    public String getIndexName(Event event) {
+      return INDEX_NAME;
+    }
 
-  static final String INDEX_NAME = "index_name";
+    @Override
+    public String getIndexPrefix(Event event) {
+      return INDEX_NAME;
+    }
 
-  @Override
-  public String getIndexName(Event event) {
-    return INDEX_NAME;
-  }
+    @Override
+    public void configure(Context context) {
+    }
 
-  @Override
-  public String getIndexPrefix(Event event) {
-    return INDEX_NAME;
-  }
-
-  @Override
-  public void configure(Context context) {
-  }
-
-  @Override
-  public void configure(ComponentConfiguration conf) {
+    @Override
+    public void configure(ComponentConfiguration conf) {
+    }
   }
 }

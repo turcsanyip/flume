@@ -65,6 +65,6 @@ under the License.
 
     <!-- TODO: Move helper classes to their own files -->
     <suppress checks="OneTopLevelClass"
-              files="KafkaSource\.java|KafkaChannel\.java|KafkaSink\.java|TestElasticSearchSink\.java"/>
+              files="KafkaSource\.java|KafkaChannel\.java|KafkaSink\.java"/>
 
 </suppressions>
