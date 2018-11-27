@@ -47,10 +47,6 @@ under the License.
     <suppress checks="TypeName"
               files="SyslogUDPSource\.java|SyslogTcpSource\.java|TaildirSource\.java"/>
 
-    <!-- TODO: Method names must follow standard Java naming conventions -->
-    <suppress checks="MethodNameCheck"
-              files="TestBucketWriter\.java|TestSyslogUtils\.java"/>
-
     <!-- TODO: Add default cases to switch statements -->
     <suppress checks="MissingSwitchDefault"
               files="SyslogUtils\.java|ReliableTaildirEventReader\.java|AbstractBasicChannelSemanticsTest\.java"/>

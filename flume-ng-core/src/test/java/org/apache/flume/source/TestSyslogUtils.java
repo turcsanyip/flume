@@ -41,7 +41,7 @@ import java.util.Map;
 
 public class TestSyslogUtils {
   @Test
-  public void TestHeader0() throws ParseException {
+  public void testHeader0() throws ParseException {
     String stamp1 = "2012-04-13T11:11:11";
     String format1 = "yyyy-MM-dd'T'HH:mm:ssZ";
     String host1 = "ubuntu-11.cloudera.com";
@@ -52,7 +52,7 @@ public class TestSyslogUtils {
   }
 
   @Test
-  public void TestHeader1() throws ParseException {
+  public void testHeader1() throws ParseException {
     String stamp1 = "2012-04-13T11:11:11";
     String format1 = "yyyy-MM-dd'T'HH:mm:ss";
     String host1 = "ubuntu-11.cloudera.com";
@@ -62,7 +62,7 @@ public class TestSyslogUtils {
   }
 
   @Test
-  public void TestHeader2() throws ParseException {
+  public void testHeader2() throws ParseException {
     String stamp1 = "2012-04-13T11:11:11";
     String format1 = "yyyy-MM-dd'T'HH:mm:ssZ";
     String host1 = "ubuntu-11.cloudera.com";
@@ -73,7 +73,7 @@ public class TestSyslogUtils {
   }
 
   @Test
-  public void TestHeader3() throws ParseException {
+  public void testHeader3() throws ParseException {
     String stamp1 = "2012-04-13T11:11:11";
     String format1 = "yyyy-MM-dd'T'HH:mm:ssZ";
     String host1 = "ubuntu-11.cloudera.com";
@@ -84,7 +84,7 @@ public class TestSyslogUtils {
   }
 
   @Test
-  public void TestHeader4() throws ParseException {
+  public void testHeader4() throws ParseException {
     String host1 = "ubuntu-11.cloudera.com";
     String data1 = "some msg";
     // null format timestamp (-)
@@ -93,7 +93,7 @@ public class TestSyslogUtils {
   }
 
   @Test
-  public void TestHeader5() throws ParseException {
+  public void testHeader5() throws ParseException {
     String stamp1 = "2012-04-13T11:11:11";
     String format1 = "yyyy-MM-dd'T'HH:mm:ss";
     String host1 = "-";
@@ -104,7 +104,7 @@ public class TestSyslogUtils {
   }
 
   @Test
-  public void TestHeader6() throws ParseException {
+  public void testHeader6() throws ParseException {
     String stamp1 = "2012-04-13T11:11:11";
     String format1 = "yyyy-MM-dd'T'HH:mm:ssZ";
     String host1 = "-";
@@ -115,7 +115,7 @@ public class TestSyslogUtils {
   }
 
   @Test
-  public void TestHeader7() throws ParseException {
+  public void testHeader7() throws ParseException {
     String stamp1 = "2012-04-13T11:11:11";
     String format1 = "yyyy-MM-dd'T'HH:mm:ssZ";
     String host1 = "-";
@@ -126,7 +126,7 @@ public class TestSyslogUtils {
   }
 
   @Test
-  public void TestHeader8() throws ParseException {
+  public void testHeader8() throws ParseException {
     String stamp1 = "2012-04-13T11:11:11.999";
     String format1 = "yyyy-MM-dd'T'HH:mm:ss.S";
     String host1 = "ubuntu-11.cloudera.com";
@@ -136,7 +136,7 @@ public class TestSyslogUtils {
   }
 
   @Test
-  public void TestHeader9() throws ParseException {
+  public void testHeader9() throws ParseException {
     SimpleDateFormat sdf = new SimpleDateFormat("MMM  d hh:MM:ss", Locale.ENGLISH);
     Calendar cal = Calendar.getInstance();
 
@@ -151,7 +151,7 @@ public class TestSyslogUtils {
   }
 
   @Test
-  public void TestHeader10() throws ParseException {
+  public void testHeader10() throws ParseException {
     SimpleDateFormat sdf = new SimpleDateFormat("MMM  d hh:MM:ss", Locale.ENGLISH);
     Calendar cal = Calendar.getInstance();
 
@@ -166,7 +166,7 @@ public class TestSyslogUtils {
   }
 
   @Test
-  public void TestHeader11() throws ParseException {
+  public void testHeader11() throws ParseException {
     // SyslogUtils should truncate microsecond precision to only 3 digits.
     // This is to maintain consistency between the two syslog implementations.
     String inputStamp  = "2014-10-03T17:20:01.123456-07:00";
@@ -181,7 +181,7 @@ public class TestSyslogUtils {
   }
 
   @Test
-  public void TestRfc3164HeaderApacheLogWithNulls() throws ParseException {
+  public void testRfc3164HeaderApacheLogWithNulls() throws ParseException {
     SimpleDateFormat sdf = new SimpleDateFormat("MMM  d hh:MM:ss", Locale.ENGLISH);
     Calendar cal = Calendar.getInstance();
 
@@ -202,7 +202,7 @@ public class TestSyslogUtils {
    * system clock is slightly slower than the Syslog source's clock).
    */
   @Test
-  public void TestRfc3164Dates() throws ParseException {
+  public void testRfc3164Dates() throws ParseException {
     //We're going to run this test using a mocked clock, once for the next 13 months
     for (int monthOffset = 0; monthOffset <= 13; monthOffset++) {
       Clock mockClock = Clock.fixed(
