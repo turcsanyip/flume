@@ -61,7 +61,8 @@ import junit.framework.Assert;
 
 public class TestReliableSpoolingFileEventReader {
 
-  private static final Logger logger = LoggerFactory.getLogger(TestReliableSpoolingFileEventReader.class);
+  private static final Logger logger =
+      LoggerFactory.getLogger(TestReliableSpoolingFileEventReader.class);
 
   private static final File WORK_DIR = new File(
       "target/test/work/" + TestReliableSpoolingFileEventReader.class.getSimpleName());
@@ -158,7 +159,8 @@ public class TestReliableSpoolingFileEventReader {
     String[] afterFiles = { "file0", "file1", "file3", "emptylineFile" };
     Assert.assertTrue("Expected " + afterFiles.length + " files left in working dir",
         checkLeftFilesInDir(WORK_DIR, afterFiles));
-    Assert.assertTrue("Expected no files left in tracker dir", checkLeftFilesInDir(TRACKER_DIR, new String[0]));
+    Assert.assertTrue("Expected no files left in tracker dir",
+        checkLeftFilesInDir(TRACKER_DIR, new String[0]));
   }
 
   @Test
@@ -178,8 +180,10 @@ public class TestReliableSpoolingFileEventReader {
     processEventsWithReader(reader, 10);
 
     String[] files = { "file2" };
-    Assert.assertTrue("Expected " + files.length + " files left in working dir", checkLeftFilesInDir(WORK_DIR, files));
-    Assert.assertTrue("Expected no files left in tracker dir", checkLeftFilesInDir(TRACKER_DIR, new String[0]));
+    Assert.assertTrue("Expected " + files.length + " files left in working dir",
+        checkLeftFilesInDir(WORK_DIR, files));
+    Assert.assertTrue("Expected no files left in tracker dir",
+        checkLeftFilesInDir(TRACKER_DIR, new String[0]));
   }
 
   @Test
@@ -208,8 +212,10 @@ public class TestReliableSpoolingFileEventReader {
     processEventsWithReader(reader, 10);
 
     String[] files = { "file0", "file1", "file3", "emptylineFile" };
-    Assert.assertTrue("Expected " + files.length + " files left in working dir", checkLeftFilesInDir(WORK_DIR, files));
-    Assert.assertTrue("Expected no files left in tracker dir", checkLeftFilesInDir(TRACKER_DIR, new String[0]));
+    Assert.assertTrue("Expected " + files.length + " files left in working dir",
+        checkLeftFilesInDir(WORK_DIR, files));
+    Assert.assertTrue("Expected no files left in tracker dir",
+        checkLeftFilesInDir(TRACKER_DIR, new String[0]));
   }
 
   @Test
@@ -236,8 +242,10 @@ public class TestReliableSpoolingFileEventReader {
     processEventsWithReader(reader, 10);
 
     String[] files = { "file0", "file1", "file2", "file3", "emptylineFile" };
-    Assert.assertTrue("Expected " + files.length + " files left in working dir", checkLeftFilesInDir(WORK_DIR, files));
-    Assert.assertTrue("Expected no files left in tracker dir", checkLeftFilesInDir(TRACKER_DIR, new String[0]));
+    Assert.assertTrue("Expected " + files.length + " files left in working dir",
+        checkLeftFilesInDir(WORK_DIR, files));
+    Assert.assertTrue("Expected no files left in tracker dir",
+        checkLeftFilesInDir(TRACKER_DIR, new String[0]));
   }
 
   @Test
@@ -558,8 +566,8 @@ public class TestReliableSpoolingFileEventReader {
     Assert.assertEquals(expectedLines, seenLines);
   }
 
-  private void templateTestForRecursiveDirs(ConsumeOrder order, Comparator<Long> comparator, int depth, int dirNum,
-                                            int fileNum, TrackingPolicy trackingPolicy) throws IOException {
+  private void templateTestForRecursiveDirs(ConsumeOrder order, Comparator<Long> comparator,
+      int depth, int dirNum, int fileNum, TrackingPolicy trackingPolicy) throws IOException {
     File dir = null;
     try {
       dir = new File("target/test/work/" + this.getClass().getSimpleName() + "_large");
@@ -614,8 +622,8 @@ public class TestReliableSpoolingFileEventReader {
     }
   }
 
-  private void createMultilevelFiles(File dir, int currDepth, int maxDepth, int dirNum, int fileNum,
-                                     Map<Long, List<String>> expected, MutableLong id) throws IOException {
+  private void createMultilevelFiles(File dir, int currDepth, int maxDepth, int dirNum,
+      int fileNum, Map<Long, List<String>> expected, MutableLong id) throws IOException {
     if (currDepth == maxDepth) {
       createFiles(dir, fileNum, expected, id);
     } else {
@@ -627,7 +635,8 @@ public class TestReliableSpoolingFileEventReader {
     }
   }
 
-  private void createFiles(File dir, int fileNum, Map<Long, List<String>> expected, MutableLong id) throws IOException {
+  private void createFiles(File dir, int fileNum, Map<Long, List<String>> expected, MutableLong id)
+      throws IOException {
     for (int i = 0; i < fileNum; i++) {
       File f = new File(dir, "file-" + id);
       String data = f.getPath();

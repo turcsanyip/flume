@@ -321,7 +321,8 @@ public class ReliableSpoolingFileEventReader implements ReliableEventReader {
 
   private boolean isFileInTrackerDir(Set<Path> completedFiles, Path path) {
     Path relPath = getRelPathToSpoolDir(path);
-    Path trackerPath = Paths.get(trackerDirectoryAbsolutePath, relPath.toString() + completedSuffix);
+    Path trackerPath = Paths.get(trackerDirectoryAbsolutePath,
+        relPath.toString() + completedSuffix);
     return completedFiles.contains(trackerPath);
   }
 

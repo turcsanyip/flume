@@ -59,10 +59,6 @@ under the License.
     <suppress checks="EmptyBlockCheck"
               files="ElasticSearchClientFactory\.java"/>
 
-    <!-- TODO: Fix line length issues -->
-    <suppress checks="LineLengthCheck"
-              files="channel[/\\]MemoryChannel\.java|ReliableSpoolingFileEventReader\.java|TestAvroSink\.java"/>
-
     <!-- TODO: Move helper classes to their own files -->
     <suppress checks="OneTopLevelClass"
               files="KafkaSource\.java|KafkaChannel\.java|KafkaSink\.java"/>

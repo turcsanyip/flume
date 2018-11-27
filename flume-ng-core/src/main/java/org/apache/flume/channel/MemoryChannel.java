@@ -189,10 +189,10 @@ public class MemoryChannel extends BasicChannelSemantics implements TransactionC
   @GuardedBy(value = "queueLock")
   private LinkedBlockingDeque<Event> queue;
 
-  // invariant that tracks the amount of space remaining in the queue(with all uncommitted takeLists deducted)
-  // we maintain the remaining permits = queue.remaining - takeList.size()
-  // this allows local threads waiting for space in the queue to commit without denying access to the
-  // shared lock to threads that would make more space on the queue
+  // invariant that tracks the amount of space remaining in the queue (with all uncommitted
+  // takeLists deducted) we maintain the remaining permits = queue.remaining - takeList.size()
+  // this allows local threads waiting for space in the queue to commit without denying access
+  // to the shared lock to threads that would make more space on the queue
   private Semaphore queueRemaining;
 
   // used to make "reservations" to grab data from the queue.
@@ -215,10 +215,13 @@ public class MemoryChannel extends BasicChannelSemantics implements TransactionC
 
   /**
    * Read parameters from context
-   * <li>capacity = type long that defines the total number of events allowed at one time in the queue.
-   * <li>transactionCapacity = type long that defines the total number of events allowed in one transaction.
-   * <li>byteCapacity = type long that defines the max number of bytes used for events in the queue.
-   * <li>byteCapacityBufferPercentage = type int that defines the percent of buffer between byteCapacity and the estimated event size.
+   * <li>capacity = type long that defines the total number of events allowed at one time
+   *   in the queue
+   * <li>transactionCapacity = type long that defines the total number of events allowed
+   *  in one transaction
+   * <li>byteCapacity = type long that defines the max number of bytes used for events in the queue
+   * <li>byteCapacityBufferPercentage = type int that defines the percent of buffer between
+   *   byteCapacity and the estimated event size
    * <li>keep-alive = type int that defines the number of second to wait for a queue permit
    */
   @Override
@@ -303,7 +306,8 @@ public class MemoryChannel extends BasicChannelSemantics implements TransactionC
         try {
           if (!bytesRemaining.tryAcquire(lastByteCapacity - byteCapacity, keepAlive,
                                          TimeUnit.SECONDS)) {
-            LOGGER.warn("Couldn't acquire permits to downsize the byte capacity, resizing has been aborted");
+            LOGGER.warn("Couldn't acquire permits to downsize the byte capacity, " +
+                "resizing has been aborted");
           } else {
             lastByteCapacity = byteCapacity;
           }
