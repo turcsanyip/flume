@@ -229,6 +229,12 @@ limitations under the License.
 
     <profile>
       <id>skipChecks</id>
+      <activation>
+        <property>
+          <name>skipChecks</name>
+          <value>!false</value>
+        </property>
+      </activation>
       <properties>
         <checkstyle.skip>true</checkstyle.skip>
         <spotbugs.skip>true</spotbugs.skip>
