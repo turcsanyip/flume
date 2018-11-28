@@ -59,10 +59,6 @@ public class DefaultSinkProcessor implements SinkProcessor, ConfigurableComponen
   }
 
   @Override
-  public void configure(Context context) {
-  }
-
-  @Override
   public Status process() throws EventDeliveryException {
     return sink.process();
   }
@@ -77,8 +73,11 @@ public class DefaultSinkProcessor implements SinkProcessor, ConfigurableComponen
   }
 
   @Override
-  public void configure(ComponentConfiguration conf) {
+  public void configure(Context context) {
+  }
 
+  @Override
+  public void configure(ComponentConfiguration conf) {
   }
 
 }

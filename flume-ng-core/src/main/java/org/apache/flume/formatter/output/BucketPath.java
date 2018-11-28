@@ -46,6 +46,28 @@ public class BucketPath {
 
   private static Clock clock = new SystemClock();
 
+  protected static final ThreadLocal<HashMap<String, SimpleDateFormat>> simpleDateFormatCache =
+      new ThreadLocal<HashMap<String, SimpleDateFormat>>() {
+
+        @Override
+        protected HashMap<String, SimpleDateFormat> initialValue() {
+          return new HashMap<String, SimpleDateFormat>();
+        }
+      };
+
+  protected static SimpleDateFormat getSimpleDateFormat(String string) {
+    HashMap<String, SimpleDateFormat> localCache = simpleDateFormatCache.get();
+
+    SimpleDateFormat simpleDateFormat = localCache.get(string);
+    if (simpleDateFormat == null) {
+      simpleDateFormat = new SimpleDateFormat(string);
+      localCache.put(string, simpleDateFormat);
+      simpleDateFormatCache.set(localCache);
+    }
+
+    return simpleDateFormat;
+  }
+
   /**
    * Returns true if in contains a substring matching TAG_REGEX (i.e. of the
    * form %{...} or %x.
@@ -188,52 +210,6 @@ public class BucketPath {
     }
     return replaceShorthand(c, headers, timeZone, needRounding, unit,
         roundDown, false, ts);
-  }
-
-  protected static final ThreadLocal<HashMap<String, SimpleDateFormat>> simpleDateFormatCache =
-      new ThreadLocal<HashMap<String, SimpleDateFormat>>() {
-
-        @Override
-        protected HashMap<String, SimpleDateFormat> initialValue() {
-          return new HashMap<String, SimpleDateFormat>();
-        }
-      };
-
-  protected static SimpleDateFormat getSimpleDateFormat(String string) {
-    HashMap<String, SimpleDateFormat> localCache = simpleDateFormatCache.get();
-
-    SimpleDateFormat simpleDateFormat = localCache.get(string);
-    if (simpleDateFormat == null) {
-      simpleDateFormat = new SimpleDateFormat(string);
-      localCache.put(string, simpleDateFormat);
-      simpleDateFormatCache.set(localCache);
-    }
-
-    return simpleDateFormat;
-  }
-
-  /**
-   * Not intended as a public API
-   */
-  @VisibleForTesting
-  protected static String replaceStaticString(String key) {
-    String replacementString = "";
-
-    switch (key.toLowerCase()) {
-      case "localhost":
-        replacementString = InetAddressCache.hostName;
-        break;
-      case "ip":
-        replacementString = InetAddressCache.hostAddress;
-        break;
-      case "fqdn":
-        replacementString = InetAddressCache.canonicalHostName;
-        break;
-      default:
-        throw new RuntimeException("The static escape string '" + key + "'"
-                + " was provided but does not match any of (localhost,IP,FQDN)");
-    }
-    return replacementString;
   }
 
   /**
@@ -478,6 +454,30 @@ public class BucketPath {
     }
     matcher.appendTail(sb);
     return sb.toString();
+  }
+
+  /**
+   * Not intended as a public API
+   */
+  @VisibleForTesting
+  protected static String replaceStaticString(String key) {
+    String replacementString = "";
+
+    switch (key.toLowerCase()) {
+      case "localhost":
+        replacementString = InetAddressCache.hostName;
+        break;
+      case "ip":
+        replacementString = InetAddressCache.hostAddress;
+        break;
+      case "fqdn":
+        replacementString = InetAddressCache.canonicalHostName;
+        break;
+      default:
+        throw new RuntimeException("The static escape string '" + key + "'"
+            + " was provided but does not match any of (localhost,IP,FQDN)");
+    }
+    return replacementString;
   }
 
   /**

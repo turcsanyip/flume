@@ -301,17 +301,6 @@ class BucketWriter {
     isOpen = true;
   }
 
-  /**
-   * Close the file handle and rename the temp file to the permanent filename.
-   * Safe to call multiple times. Logs HDFSWriter.close() exceptions. This
-   * method will not cause the bucket writer to be dereferenced from the HDFS
-   * sink that owns it. This method should be used only when size or count
-   * based rolling closes this file.
-   */
-  public void close() throws InterruptedException {
-    close(false);
-  }
-
   private CallRunner<Void> createCloseCallRunner() {
     return new CallRunner<Void>() {
       @Override
@@ -404,6 +393,17 @@ class BucketWriter {
         LOG.warn("Lease recovery failed for {}", bucketPath, ex);
       }
     }
+  }
+
+  /**
+   * Close the file handle and rename the temp file to the permanent filename.
+   * Safe to call multiple times. Logs HDFSWriter.close() exceptions. This
+   * method will not cause the bucket writer to be dereferenced from the HDFS
+   * sink that owns it. This method should be used only when size or count
+   * based rolling closes this file.
+   */
+  public void close() throws InterruptedException {
+    close(false);
   }
 
   public void close(boolean callCloseCallback) throws InterruptedException {

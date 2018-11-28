@@ -66,10 +66,6 @@ final class FlumeEventQueue {
   private DB db;
   private Set<Long> queueSet;
 
-  /**
-   * @param capacity max event capacity of queue
-   * @throws IOException
-   */
   FlumeEventQueue(EventQueueBackingStore backingStore, File inflightTakesFile,
                   File inflightPutsFile, File queueSetDBDir) throws Exception {
     Preconditions.checkArgument(backingStore.getCapacity() > 0,
@@ -168,7 +164,7 @@ final class FlumeEventQueue {
    * Add a FlumeEventPointer to the head of the queue.
    * Called during rollbacks.
    *
-   * @param FlumeEventPointer to be added
+   * @param e to be added
    * @return true if space was available and pointer was
    * added to the queue
    */
@@ -196,7 +192,7 @@ final class FlumeEventQueue {
   /**
    * Add a FlumeEventPointer to the tail of the queue.
    *
-   * @param FlumeEventPointer to be added
+   * @param e to be added
    * @return true if space was available and pointer
    * was added to the queue
    */
@@ -230,12 +226,10 @@ final class FlumeEventQueue {
    * legal to call this method after replayComplete has been
    * called.
    *
-   * @param FlumeEventPointer to be removed
+   * @param e to be removed
    * @return true if the FlumeEventPointer was found
    * and removed
    */
-  // remove() overloads should not be split, according to checkstyle.
-  // CHECKSTYLE:OFF
   synchronized boolean remove(FlumeEventPointer e) {
     long value = e.toLong();
     Preconditions.checkArgument(value != EMPTY);
@@ -260,7 +254,45 @@ final class FlumeEventQueue {
     searchTime += System.currentTimeMillis() - start;
     return false;
   }
-  // CHECKSTYLE:ON
+
+  protected synchronized long remove(int index, long transactionID) {
+    if (index < 0 || index > backingStore.getSize() - 1) {
+      throw new IndexOutOfBoundsException("index = " + index
+          + ", queueSize " + backingStore.getSize() + " " + channelNameDescriptor);
+    }
+    copyCount++;
+    long start = System.currentTimeMillis();
+    long value = get(index);
+    if (queueSet != null) {
+      queueSet.remove(value);
+    }
+    //if txn id = 0, we are recovering from a crash.
+    if (transactionID != 0) {
+      inflightTakes.addEvent(transactionID, value);
+    }
+    if (index > backingStore.getSize() / 2) {
+      // Move tail part to left
+      for (int i = index; i < backingStore.getSize() - 1; i++) {
+        long rightValue = get(i + 1);
+        set(i, rightValue);
+      }
+      set(backingStore.getSize() - 1, EMPTY);
+    } else {
+      // Move head part to right
+      for (int i = index - 1; i >= 0; i--) {
+        long leftValue = get(i);
+        set(i + 1, leftValue);
+      }
+      set(0, EMPTY);
+      backingStore.setHead(backingStore.getHead() + 1);
+      if (backingStore.getHead() == backingStore.getCapacity()) {
+        backingStore.setHead(0);
+      }
+    }
+    backingStore.setSize(backingStore.getSize() - 1);
+    copyTime += System.currentTimeMillis() - start;
+    return value;
+  }
 
   /**
    * @return a copy of the set of fileIDs which are currently on the queue
@@ -337,45 +369,6 @@ final class FlumeEventQueue {
     if (!inflightPuts.completeTransaction(transactionID)) {
       inflightTakes.completeTransaction(transactionID);
     }
-  }
-
-  protected synchronized long remove(int index, long transactionID) {
-    if (index < 0 || index > backingStore.getSize() - 1) {
-      throw new IndexOutOfBoundsException("index = " + index
-          + ", queueSize " + backingStore.getSize() + " " + channelNameDescriptor);
-    }
-    copyCount++;
-    long start = System.currentTimeMillis();
-    long value = get(index);
-    if (queueSet != null) {
-      queueSet.remove(value);
-    }
-    //if txn id = 0, we are recovering from a crash.
-    if (transactionID != 0) {
-      inflightTakes.addEvent(transactionID, value);
-    }
-    if (index > backingStore.getSize() / 2) {
-      // Move tail part to left
-      for (int i = index; i < backingStore.getSize() - 1; i++) {
-        long rightValue = get(i + 1);
-        set(i, rightValue);
-      }
-      set(backingStore.getSize() - 1, EMPTY);
-    } else {
-      // Move head part to right
-      for (int i = index - 1; i >= 0; i--) {
-        long leftValue = get(i);
-        set(i + 1, leftValue);
-      }
-      set(0, EMPTY);
-      backingStore.setHead(backingStore.getHead() + 1);
-      if (backingStore.getHead() == backingStore.getCapacity()) {
-        backingStore.setHead(0);
-      }
-    }
-    backingStore.setSize(backingStore.getSize() - 1);
-    copyTime += System.currentTimeMillis() - start;
-    return value;
   }
 
   protected synchronized int getSize() {

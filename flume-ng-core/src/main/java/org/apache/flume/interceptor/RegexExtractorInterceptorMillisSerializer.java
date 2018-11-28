@@ -36,17 +36,17 @@ public class RegexExtractorInterceptorMillisSerializer implements
   private DateTimeFormatter formatter;
 
   @Override
+  public String serialize(String value) {
+    DateTime dateTime = formatter.parseDateTime(value);
+    return Long.toString(dateTime.getMillis());
+  }
+
+  @Override
   public void configure(Context context) {
     String pattern = context.getString("pattern");
     Preconditions.checkArgument(!StringUtils.isEmpty(pattern),
         "Must configure with a valid pattern");
     formatter = DateTimeFormat.forPattern(pattern);
-  }
-
-  @Override
-  public String serialize(String value) {
-    DateTime dateTime = formatter.parseDateTime(value);
-    return Long.toString(dateTime.getMillis());
   }
 
   @Override

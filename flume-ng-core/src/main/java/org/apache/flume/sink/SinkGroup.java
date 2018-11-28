@@ -42,6 +42,10 @@ public class SinkGroup implements Configurable, ConfigurableComponent {
     sinks = groupSinks;
   }
 
+  public SinkProcessor getProcessor() {
+    return processor;
+  }
+
   @Override
   public void configure(Context context) {
     conf = new SinkGroupConfiguration("sinkgrp");
@@ -52,10 +56,6 @@ public class SinkGroup implements Configurable, ConfigurableComponent {
     }
     configure(conf);
 
-  }
-
-  public SinkProcessor getProcessor() {
-    return processor;
   }
 
   @Override

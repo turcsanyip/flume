@@ -66,6 +66,11 @@ public class SimpleAsyncHbaseEventSerializer implements AsyncHbaseEventSerialize
   }
 
   @Override
+  public void setEvent(Event event) {
+    this.payload = event.getBody();
+  }
+
+  @Override
   public List<PutRequest> getActions() {
     List<PutRequest> actions = new ArrayList<PutRequest>();
     if (payloadColumn != null) {
@@ -108,7 +113,6 @@ public class SimpleAsyncHbaseEventSerializer implements AsyncHbaseEventSerialize
   @Override
   public void cleanUp() {
     // TODO Auto-generated method stub
-
   }
 
   @Override
@@ -133,11 +137,6 @@ public class SimpleAsyncHbaseEventSerializer implements AsyncHbaseEventSerialize
       incrementColumn = iCol.getBytes(Charsets.UTF_8);
     }
     incrementRow = context.getString("incrementRow", "incRow").getBytes(Charsets.UTF_8);
-  }
-
-  @Override
-  public void setEvent(Event event) {
-    this.payload = event.getBody();
   }
 
   @Override

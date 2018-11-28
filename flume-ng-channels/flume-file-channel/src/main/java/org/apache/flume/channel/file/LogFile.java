@@ -514,31 +514,6 @@ public abstract class LogFile {
       }
     }
 
-    synchronized void close() {
-      if (open) {
-        open = false;
-        LOG.info("Closing RandomReader " + file);
-        List<RandomAccessFile> fileHandles = Lists.newArrayList();
-        while (readFileHandles.drainTo(fileHandles) > 0) {
-          for (RandomAccessFile fileHandle : fileHandles) {
-            synchronized (fileHandle) {
-              try {
-                fileHandle.close();
-              } catch (IOException e) {
-                LOG.warn("Unable to close fileHandle for " + file, e);
-              }
-            }
-          }
-          fileHandles.clear();
-          try {
-            Thread.sleep(5L);
-          } catch (InterruptedException e) {
-            // this is uninterruptable
-          }
-        }
-      }
-    }
-
     private RandomAccessFile open() throws IOException {
       return new RandomAccessFile(file, "r");
     }
@@ -570,6 +545,31 @@ public abstract class LogFile {
           fileHandle.close();
         } catch (IOException e) {
           LOG.warn("Unable to close " + file, e);
+        }
+      }
+    }
+
+    synchronized void close() {
+      if (open) {
+        open = false;
+        LOG.info("Closing RandomReader " + file);
+        List<RandomAccessFile> fileHandles = Lists.newArrayList();
+        while (readFileHandles.drainTo(fileHandles) > 0) {
+          for (RandomAccessFile fileHandle : fileHandles) {
+            synchronized (fileHandle) {
+              try {
+                fileHandle.close();
+              } catch (IOException e) {
+                LOG.warn("Unable to close fileHandle for " + file, e);
+              }
+            }
+          }
+          fileHandles.clear();
+          try {
+            Thread.sleep(5L);
+          } catch (InterruptedException e) {
+            // this is uninterruptable
+          }
         }
       }
     }

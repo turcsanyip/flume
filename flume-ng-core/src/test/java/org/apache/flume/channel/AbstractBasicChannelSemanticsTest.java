@@ -165,22 +165,6 @@ public abstract class AbstractBasicChannelSemanticsTest {
     static final long serialVersionUID = -1;
   }
 
-  protected void testException(Class<? extends Throwable> exceptionClass,
-      Runnable test) {
-    try {
-      test.run();
-      Assert.fail();
-    } catch (Throwable e) {
-      if (exceptionClass == InterruptedException.class
-          && e instanceof ChannelException
-          && e.getCause() instanceof InterruptedException) {
-        Assert.assertTrue(Thread.interrupted());
-      } else if (!exceptionClass.isInstance(e)) {
-        throw new AssertionError(e);
-      }
-    }
-  }
-
   protected void testIllegalArgument(Runnable test) {
     testException(IllegalArgumentException.class, test);
   }
@@ -216,6 +200,22 @@ public abstract class AbstractBasicChannelSemanticsTest {
           testException(exceptionClass, test);
         }
       });
+  }
+
+  protected void testException(Class<? extends Throwable> exceptionClass,
+      Runnable test) {
+    try {
+      test.run();
+      Assert.fail();
+    } catch (Throwable e) {
+      if (exceptionClass == InterruptedException.class
+          && e instanceof ChannelException
+          && e.getCause() instanceof InterruptedException) {
+        Assert.assertTrue(Thread.interrupted());
+      } else if (!exceptionClass.isInstance(e)) {
+        throw new AssertionError(e);
+      }
+    }
   }
 
   protected void testError(Runnable test) {
